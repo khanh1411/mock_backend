@@ -1,0 +1,54 @@
+#thTitlePost{
+    text-align: center;
+}
+
+#titlePost{
+    max-width: 100px; 
+    word-wrap: break-word;
+}
+
+#thContentPost{
+    text-align: center;
+}
+
+#contentPost{
+    max-width: 150px; 
+    word-wrap: break-word;
+}
+
+#thTypePost{
+    text-align: center;
+}
+
+#typePost{
+    text-align: center;
+}
+
+#thIdPost{
+    text-align: center;
+}
+
+#thPhotoPost{
+    text-align: center;
+}
+
+#idPost{
+    text-align: center;
+}
+
+.post_id{
+    margin-top: 10px;
+    border: 1px solid #ccc;
+}
+
+#btnupload{
+    margin-top: 10px;
+}
+
+#content_edit_post
+{
+    height: 250px;
+    word-wrap: break-word;
+    /* max-width: 500px; */
+
+}
