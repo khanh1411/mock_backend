@@ -40,3 +40,4 @@ class User extends Model
         return $this->delete();
     }
 }
+$user = new User;

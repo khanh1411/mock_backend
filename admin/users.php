@@ -45,16 +45,16 @@ $users = $users->find_all();
                         <tbody>
                             <?php foreach ($users as $user) : ?>
                                 <tr>
-                                    <td><?php echo $user['id']; ?></td>
-                                    <td><?php echo $user['username']; ?>
+                                    <td><?php echo $user->id; ?></td>
+                                    <td><?php echo $user->username; ?>
                                         <div class="action_links">
-                                            <a href="delete_user.php?id=<?php echo $user['id'] ?>">Delete</a>
-                                            <a href="edit_user.php?id=<?php echo  $user['id'] ?>">Edit</a>
+                                            <a href="delete_user.php?id=<?php echo $user->id ?>">Delete</a>
+                                            <a href="edit_user.php?id=<?php echo  $user->id ?>">Edit</a>
                                         </div>
                                     </td>
-                                    <td><?php echo $user['first_name']; ?></td>
-                                    <td><?php echo $user['last_name'] ?></td>
-                                    <td><?php echo $user['role'] ?></td>
+                                    <td><?php echo $user->first_name; ?></td>
+                                    <td><?php echo $user->last_name; ?></td>
+                                    <td><?php echo $user->role; ?></td>
 
 
                                 </tr>

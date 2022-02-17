@@ -44,13 +44,9 @@ class Model extends Database
 
     public function find_all()
     {
-        $query = $this->query("SELECT * FROM ".$this->table." ");
-        while ($row = $query->fetch_assoc()) {
-            $data[] = $row;
-        }
-        // echo "<pre>";
-        // print_r($data); die;
-        return $data;
+        $query = $this->the_query("SELECT * FROM ".$this->table." ");
+        // print_r($query); die;
+        return $query ?? null;
     }
 
     public function create()
@@ -133,57 +129,39 @@ class Model extends Database
     public function find_by_id($id)
     {
         $query = $this->the_query("SELECT * FROM ".$this->table." WHERE id = $id");
-        // print_r(array_shift($query)); die;
-        // while ($row = $query->fetch_assoc()) {
-        //     $data[] = $row;
-        // }
-        // echo "<pre>";
-        // print_r($data); die;
-        // return $data;
-        // return $query;
-        return isset($query) ? array_shift($query) : false; // trả về item bị loại ra khỏi array
+        return isset($query) ? array_shift($query) : false; // trả về object bị loại ra khỏi array
     }
 
     public function the_query($sql)
     {
         $query = $this->query($sql);
         $the_object_array = [];
-
+        
         while($row = $query->fetch_array()){
             $the_object_array[] = $this->instantation($row);
         }
+        // echo "<pre>";
+        // print_r($the_object_array); die;
         return $the_object_array;
     }
 
     public function instantation($the_record)
     {
         $calling_class = get_called_class();
-        $the_object = new $calling_class; // cach 2: $the_object = new Post;
-        
-        // print_r($the_object); die;
-
-        // $the_object->id = $found_user['id'];
-        // $the_object->title = $found_user['title'];
-        // $the_object->content = $found_user['content'];
+        $the_object = new $calling_class; 
 
         foreach($the_record as $the_attribute => $value){
             if($the_object->has_the_attribute($the_attribute)){ // kiểm tra các key trong mảng $the_record có tồn tại trong $the_object không 
-                // print_r($the_object); die;
-                $the_object->$the_attribute = $value;
+                $the_object->$the_attribute = $value; // lấy các key tồn tại của $the_object
             }
         }
-
-        // print_r($the_object); die;
         return $the_object;
     }
 
     public function has_the_attribute($the_attribute)
     {
         $object_properties = get_object_vars($this); // lấy các thuộc tính của đối tượng
-        // echo "<pre>";
-        // print_r($object_properties); die;
-        return array_key_exists($the_attribute, $object_properties);  // kiểm tra key $rowthe_attribute có tồn tại trong mảng $object_properties không
-       
+        return array_key_exists($the_attribute, $object_properties);  // kiểm tra key $the_attribute có tồn tại trong mảng $object_properties không
     }
 
 }

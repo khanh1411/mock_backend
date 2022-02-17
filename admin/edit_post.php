@@ -5,16 +5,25 @@
 } ?>
 
 <?php
+$categories = new Category;
+$categories = $categories->find_all();
+
 $post = new Post;
 $post = $post->find_by_id($_GET['id']);
 
 if (isset($_POST['update'])) {
     if ($post) {
-        $post->title      = $_POST['title'];
-        $post->content    = $_POST['content'];
-        $post->type_id    = $_POST['type_id'];
-        $post->created_at = $_POST['created_at'];
+        $post->title          = $post->escape_string($_POST['title']);
+        $post->content        = html_entity_decode($_POST['content']);
+        $post->category_id    = $post->escape_string($_POST['category_id']);
+        $post->public_time    = $post->escape_string($_POST['public_time']);
 
+        if(!empty($post->image_url)){
+            $post->set_file($_FILES['image_url']);
+            $post->save_image();
+        }
+        // echo "<pre>";
+        // print_r($post); die;
         $post->save();
         redirect("posts.php");
     }
@@ -47,27 +56,41 @@ if (isset($_POST['update'])) {
                     Posts
                     <small>create new one</small>
                 </h1>
-                <form action="" method="POST">
+                <form action="" method="POST" enctype="multipart/form-data">
                     <div class="col-md-6 col-md-offset-3">
 
                         <div class="form-group">
                             <label for="title">Title</label>
-                            <input type="text" name="title" value="<?php echo $post->title ?>" class="form-control">
+                            <input type="text" name="title" value="<?php echo $post->title; ?>" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="file" name="image_url">
                         </div>
 
                         <div class="form-group">
                             <label for="content">Content</label>
-                            <input id="content_edit_post" type="text" name="content" value="<?php echo $post->content ?>" class="form-control">
-                            <!-- <textarea id="summernote" class="form-control" name="content" id="" cols="30" rows="10">
-                            </textarea> -->
+                            <textarea id="summernote" class="form-control" name="content" id="" cols="30" rows="10">
+                                <?php echo $post->content; ?>
+                            </textarea>
                         </div>
 
                         <div class="form-group">
-                            <label for="type_id">Type_id</label>
-                            <input type="text" name="type_id" value="<?php echo $post->type_id ?>" class="form-control">
+                            <select name="category_id" >
+                                <?php 
+                                    $reg_datetime = date("Y-m-d H:i", strtotime($post->public_time)); // convert to time
+                                    $from_for_val=  date("Y-m-d\TH:i:s", strtotime($reg_datetime)); // format $reg_datetime
+                                ?>
+
+                                <?php foreach($categories as $category) { ?>
+                                    <option <?php echo $category->id == $post->category_id ? 'selected' : '' ?> value="<?php echo $category->id ?>"><?php echo $category->name ?></option>
+                                <?php } ?>
+
+                            </select>
                         </div>
 
-                        <input type="datetime-local" name="created_at" value="<?php echo $post->created_at ?>" />
+                        <input type="datetime-local" name="public_time" value="<?=$from_for_val;?>">
+                        
 
                         <div class="form-group">
                             <input type="submit" name="update" class="btn btn-primary pull-right">

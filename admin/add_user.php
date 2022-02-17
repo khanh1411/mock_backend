@@ -8,11 +8,11 @@
 $user = new User;
 if (isset($_POST['create'])) {
     if($user){
-        $user->username   = $_POST['username'];
-        $user->password   = md5($user->key).md5($_POST['password']);
-        $user->first_name = $_POST['first_name'];
-        $user->last_name  = $_POST['last_name'];
-        $user->role       = $_POST['role'];
+        $user->username   = $user->escape_string($_POST['username']);
+        $user->password   =  md5($user->key) . md5($_POST['password']);
+        $user->first_name = $user->escape_string($_POST['first_name']);
+        $user->last_name  = $user->escape_string($_POST['last_name']);
+        $user->role       = $user->escape_string($_POST['role']);
 
         $user->save();
         redirect("users.php");
@@ -70,8 +70,10 @@ if (isset($_POST['create'])) {
                         </div>
 
                         <div class="form-group">
-                            <label for="role">Role</label>
-                            <input type="text" name="role" class="form-control">
+                            <select name="role" >
+                                <option value="1">1</option>
+                                <option value="0">0</option>
+                            </select>
                         </div>
 
                       

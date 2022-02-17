@@ -3,11 +3,10 @@
 <?php if($session->is_signed_in() === FALSE) { redirect("login.php"); } ?>
 <?php
 $result = new Post;
-$posts = $result->find_all();
+$posts = $result->pagination();
+// echo "<pre>";
+// print_r($result->find_all()); die;
 
-// $post_images = $result->picture_path();
-// echo"<pre>";
-// print_r($post_images); die;
 ?>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -38,37 +37,48 @@ $posts = $result->find_all();
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th id="thIdPost">Id</th>
-                                <!-- <th id="thPhotoPost">Image</th> -->
-                                <th id="thTitlePost">Title</th>
-                                <th id="thContentPost">Content</th>
-                                <th id="thTypePost">Type_id</th>
+                                <th id="">Id</th>
+                                <th id="">Title</th>
+                                <th id="">Image</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($posts as $post) : ?>
                                 <tr>
-                                    <td id="idPost"><?php echo $post['id']; ?></td>
-                                    <!-- <td></td> -->
-                                    <td id="titlePost"><?php echo $post['title']; ?>
+                                    <td id=""><?php echo $post->id; ?></td>
+                                  
+                                    <td id="titleDisplayPost"><?php echo $post->title; ?>
                                         <div class="action_links">
-                                            <a href="delete_post.php?id=<?php echo $post['id'] ?>">Delete</a>
-                                            <a href="edit_post.php?id=<?php echo  $post['id'] ?>">Edit</a>
+                                            <a href="delete_post.php?id=<?php echo $post->id; ?>">Delete</a>
+                                            <a href="edit_post.php?id=<?php echo  $post->id; ?>">Edit</a>
                                         </div>
                                     </td>
-                                    <td id="contentPost"><?php echo substr($post['content'], 0, 400)." ..."; ?></td>
-                                    <td id="typePost"><?php echo $post['type_id'] ?></td>
+                                    
+                                    <td><img class="admin-user-thumbnail user_image" src="<?php echo $post->image_path(); ?>" alt=""></td>
                                 </tr>
                             <?php endforeach; ?>
 
                         </tbody>
                     </table>
                 </div>
+                <div>
+                    <?php 
+                        $sql = "SELECT * FROM posts";
+                        $post_all = $result->query($sql);
+                        $post_count = $post_all->num_rows;
+                        $post_button = ceil($post_count/4);
+                        $i = 1;
+                        echo 'trang';
+                        for($i=1; $i<=$post_button; $i++){
+                            echo '<a style="margin: 0 5px;" href="posts.php?trang='.$i.' ">'.$i.'</a>';
+                            
+                        }
+                        
+                    ?>
+                </div>
 
             </div>
         </div>
-        <!-- /.row -->
-
     </div>
 
 

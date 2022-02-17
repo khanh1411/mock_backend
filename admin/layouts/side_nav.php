@@ -6,9 +6,9 @@
         <li>
             <a href="posts.php"><i class="fa fa-fw fa-bar-chart-o"></i> Post</a>
         </li>
-        <li>
+        <!-- <li>
             <a href="upload.php"><i class="fa fa-fw fa-table"></i> Upload</a>
-        </li>
+        </li> -->
         <li>
             <a href="users.php"><i class="fa fa-fw fa-table"></i> User</a>
         </li>

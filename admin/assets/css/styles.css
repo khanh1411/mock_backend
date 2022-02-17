@@ -50,5 +50,12 @@
     height: 250px;
     word-wrap: break-word;
     /* max-width: 500px; */
+}
 
+.user_image {
+    width: 62px;
+}
+  
+#titleDisplayPost{
+    /* width: 300px; */
 }

@@ -17,7 +17,7 @@ require_once "libraries/Session.php";
 
 require_once "components/User.php";
 require_once "components/Post.php";
-require_once "components/Image.php";
+require_once "components/Category.php";
 
 
 function redirect($location)

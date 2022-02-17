@@ -10,11 +10,11 @@ $user = $user->find_by_id($_GET['id']);
 
 if (isset($_POST['update'])) {
     if ($user) {
-        $user->username   = $_POST['username'];
+        $user->username   = $user->escape_string($_POST['username']);
         $user->password   =  md5($user->key) . md5($_POST['password']);
-        $user->first_name = $_POST['first_name'];
-        $user->last_name  = $_POST['last_name'];
-        $user->role       = $_POST['role'];
+        $user->first_name = $user->escape_string($_POST['first_name']);
+        $user->last_name  = $user->escape_string($_POST['last_name']);
+        $user->role       = $user->escape_string($_POST['role']);
 
         $user->save();
         redirect("users.php");
@@ -72,9 +72,11 @@ if (isset($_POST['update'])) {
                         </div>
 
                         <div class="form-group">
-                            <label for="role">Role</label>
-                            <input type="text" name="role" value="<?php echo $user->role ?>" class="form-control">
+                            <select name="role">
+                                <option <?php isset($user->role) ? 'selected' : '' ?>value="<?php echo $user->role; ?>"><?php echo $user->role ?></option>
+                            </select>
                         </div>
+
 
                         <div class="form-group">
                             <input type="submit" name="update" class="btn btn-primary pull-right">

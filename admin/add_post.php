@@ -5,13 +5,19 @@
 } ?>
 
 <?php
+$categories = new Category;
+$categories = $categories->find_all();
+
 $post = new Post;
 if (isset($_POST['create'])) {
-    if($post){
-        $post->title      = $_POST['title'];
-        $post->content    = $_POST['content'];
-        $post->type_id    = $_POST['type_id'];
-        $post->created_at = $_POST['created_at'];
+    if ($post) {
+        $post->title          = $post->escape_string($_POST['title']);
+        $post->content        = html_entity_decode($_POST['content']);
+        $post->category_id    = $post->escape_string($_POST['category_id']);
+        $post->public_time    = $post->escape_string($_POST['public_time']);
+
+        $post->set_file($_FILES['image_url']);
+        $post->save_image();
 
         $post->save();
         redirect("posts.php");
@@ -45,7 +51,7 @@ if (isset($_POST['create'])) {
                     Posts
                     <small>create new one</small>
                 </h1>
-                <form action="" method="POST">
+                <form action="" method="POST" enctype="multipart/form-data">
                     <div class="col-md-6 col-md-offset-3">
 
                         <div class="form-group">
@@ -54,18 +60,25 @@ if (isset($_POST['create'])) {
                         </div>
 
                         <div class="form-group">
-                            <label for="content">Content</label>
-                            <input type="text" name="content" class="form-control">
-                            <!-- <textarea id="summernote" class="form-control" name="content" id="" cols="30" rows="10">
-                            </textarea> -->
+                            <input type="file" name="image_url">
                         </div>
 
                         <div class="form-group">
-                            <label for="type_id">Type_id</label>
-                            <input type="text" name="type_id" class="form-control">
+                            <label for="content">Content</label>
+                            <!-- <input type="text" name="content" class="form-control"> -->
+                            <textarea id="summernote" class="form-control" name="content" id="" cols="30" rows="10">
+                            </textarea>
                         </div>
 
-                        <input type="datetime-local" value="" name="created_at">
+                        <div class="form-group">
+                            <select name="category_id" >
+                                <?php foreach($categories as $category) { ?>
+                                    <option <?= $category->id == $post->category_id ? 'selected' : '' ?> value="<?php echo $category->id ?>"><?= $category->name ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+
+                        <input type="datetime-local" value="" name="public_time">
 
                         <div class="form-group">
                             <input type="submit" name="create" class="btn btn-primary pull-right">
@@ -73,7 +86,7 @@ if (isset($_POST['create'])) {
 
                     </div>
 
-                
+
 
                 </form>
             </div>
