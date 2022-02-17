@@ -22,8 +22,7 @@ if (isset($_POST['update'])) {
             $post->set_file($_FILES['image_url']);
             $post->save_image();
         }
-        // echo "<pre>";
-        // print_r($post); die;
+       
         $post->save();
         redirect("posts.php");
     }
